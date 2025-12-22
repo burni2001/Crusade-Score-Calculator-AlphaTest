@@ -1882,7 +1882,7 @@ function csvToHtmlTable(csvText, sectionTitle) {
     return html;
 }
 
-/* === UPDATED: OVERLAY SYSTEM (Structure Fix for Padding) === */
+/* === UPDATED: OVERLAY SYSTEM (With Download Button) === */
 function openSlotOverlay(index) {
     const savedSlots = JSON.parse(localStorage.getItem("cogitator_saved_missions") || "[]");
     const slot = savedSlots[index];
@@ -1902,32 +1902,27 @@ function openSlotOverlay(index) {
     const statsTable = csvToHtmlTable(slot.csv, "ADDITIONAL STATISTICS");
 
     // Build Modal Content
-    // STRATEGY: 
-    // 1. Outer Box: Handles the Green Border and size. Overflow HIDDEN (no scrollbar here).
-    // 2. Inner Box: Handles the Scrolling and the Padding.
     modal.innerHTML = `
         <div class="ocr-modal-content" style="
             max-width: 900px; 
             width: 95%; 
             max-height: 90vh;
-            display: flex;         /* flex layout to manage height */
+            display: flex;
             flex-direction: column;
-            
             box-sizing: border-box;
             border: 2px solid var(--pip-green); 
             background: #050a05; 
             box-shadow: 0 0 20px rgba(51, 255, 0, 0.2); 
-            
-            overflow: hidden;      /* CRITICAL: Hides scrollbar on the border box */
-            padding: 0;            /* No padding on the border box */
+            overflow: hidden; 
+            padding: 0; 
         ">
             
             <div style="
-                overflow-y: auto;  /* Scrollbar lives here */
+                overflow-y: auto;
                 width: 100%;
                 height: 100%;
-                padding: 30px 100px 30px 30px; /* 60px Right Padding = The Gap */
-                box-sizing: border-box;       /* Ensures padding subtracts from width */
+                padding: 30px 60px 30px 30px; 
+                box-sizing: border-box;
             ">
                 
                 <div style="text-align: center; border-bottom: 1px solid var(--pip-green); padding-bottom: 15px; margin-bottom: 20px;">
@@ -1944,21 +1939,65 @@ function openSlotOverlay(index) {
                 <h3 style="color: var(--pip-green); margin-top: 20px; font-size: 1.1em; opacity: 0.8;">ADDITIONAL STATISTICS</h3>
                 ${statsTable}
 
-                <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-                    <button onclick="closeSlotModal()" class="ocr-btn" style="width: auto; padding: 5px 30px;">CLOSE</button>
+                <div style="
+                    display: flex; 
+                    justify-content: flex-end; 
+                    gap: 15px; 
+                    margin-top: 30px; 
+                    padding-top: 15px; 
+                    border-top: 1px solid #333;
+                ">
+                    <button onclick="downloadSlotCSV(${index})" class="ocr-btn" style="
+                        width: auto; 
+                        padding: 5px 20px; 
+                        background: rgba(0, 50, 0, 0.5); 
+                        border: 1px solid #558855; 
+                        color: #afffa6;
+                        font-size: 0.9em;
+                    ">DOWNLOAD CSV</button>
+                    
+                    <button onclick="closeSlotModal()" class="ocr-btn" style="
+                        width: auto; 
+                        padding: 5px 30px;
+                    ">CLOSE</button>
                 </div>
 
             </div>
         </div>
     `;
 
-    // Show it
     requestAnimationFrame(() => modal.classList.add('active'));
 }
 
 function closeSlotModal() {
     const modal = document.getElementById('slot-modal-overlay');
     if (modal) modal.classList.remove('active');
+}
+
+/* === HELPER: Download Slot Data as CSV === */
+function downloadSlotCSV(index) {
+    const savedSlots = JSON.parse(localStorage.getItem("cogitator_saved_missions") || "[]");
+    const slot = savedSlots[index];
+    if(!slot) return;
+
+    // Create a Blob from the CSV string
+    const blob = new Blob([slot.csv], { type: 'text/csv;charset=utf-8;' });
+    
+    // Generate a filename based on Mission Name and Date
+    const safeName = slot.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    const filename = `mission_data_${safeName}_${index+1}.csv`;
+
+    // Trigger Download
+    const link = document.createElement("a");
+    if (link.download !== undefined) { 
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 }
 
 // 4. Delete a Slot
