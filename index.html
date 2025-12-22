@@ -17,7 +17,7 @@
                 <div>
                     <div>REF: SM-2/CRUSADE</div>
                     <div style="font-size: 0.8em; opacity: 0.7">
-                        V 4.42 - ADEPTUS ADMINISTRATUM
+                        V 4.5 Alpha - ADEPTUS ADMINISTRATUM
                     </div>
                 </div>
                 <h1>Adeptus Astartes - Mission&nbsp;Debrief</h1>
@@ -127,8 +127,12 @@
                             </select>
                         </div>
                         <div class="mission-params">
-                            <label>Waves</label>
+                            <label>Waves Reached</label>
                             <input type="number" id="global-waves" value="0" min="0" inputmode="numeric" onchange="calculate(); saveData();" />
+                        </div>
+                        <div class="mission-params">
+                            <label>Tasks Completed</label>
+                            <input type="number" id="global-tasks" value="0" min="0" inputmode="numeric" onchange="calculate(); saveData();" />
                         </div>
                     </div>
                 </div>
@@ -170,8 +174,12 @@
                                 <input type="number" id="mod-obj" value="100" onchange="calculate(); saveData();">
                             </div>
                             <div class="mod-row">
-                                <label>Waves</label>
-                                <input type="number" id="mod-waves" value="10" onchange="calculate(); saveData();">
+                                <label>Waves (>15)</label>
+                                <input type="number" id="mod-waves" value="250" onchange="calculate(); saveData();">
+                            </div>
+                            <div class="mod-row">
+                                <label>Tasks</label>
+                                <input type="number" id="mod-tasks" value="25" onchange="calculate(); saveData();">
                             </div>
                             <div></div> 
                         </div>
