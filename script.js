@@ -2177,10 +2177,10 @@ if (csvUploadInput) {
         // Reset State
         importAppState = {
             mission: { name:'-', diff:'-', waves:'-', obj:'-', gene:'-', arm:'-' },
-            modifiers: { kills:'-', specials:'-', incaps:'-', dmg:'-', gene:'-', arm:'-', obj:'-', waves:'-' },
+            modifiers: { kills:'-', specials:'-', incaps:'-', dmg:'-', gene:'-', arm:'-', obj:'-', waves:'-', tasks:'-' },
             players: {},
-            playerOrder: [],
-            matrixTotals: {}
+            playerOrder: [],  
+            matrixTotals: {}  
         };
 
         try {
@@ -2267,7 +2267,7 @@ function processCSV(text) {
         if(importAppState.mission.gene === '-') importAppState.mission.gene = matchVal(/^[, \t]*Geneseed Retrieved[:,\s]+(.+)/i) || '-';
         if(importAppState.mission.arm === '-') importAppState.mission.arm = matchVal(/^[, \t]*Armoury Data Retrieved[:,\s]+(.+)/i) || '-';
         if(importAppState.mission.waves === '-') importAppState.mission.waves = matchVal(/^[, \t]*Waves Reached[:,\s]+(.+)/i) || '-';
-        if(importAppState.mission.tasks === '-') importAppState.mission.tasks = matchVal(/^[, \t]*Tasks Completed[:,\s]+(.+)/i) || '-'; // NEW
+        if(importAppState.mission.tasks === '-') importAppState.mission.tasks = matchVal(/^[, \t]*Tasks Completed[:,\s]+(.+)/i) || '-';
 
         if(line.includes(':,')) {
             const parts = line.split(':,');
@@ -2283,7 +2283,7 @@ function processCSV(text) {
                 if(key === 'Armoury') importAppState.modifiers.arm = val;
                 if(key === 'Waves') importAppState.modifiers.waves = val;
                 if(key === 'Objective') importAppState.modifiers.obj = val;
-                if(key === 'Tasks') importAppState.modifiers.tasks = val; // NEW
+                if(key === 'Tasks') importAppState.modifiers.tasks = val;
             }
         }
     }
