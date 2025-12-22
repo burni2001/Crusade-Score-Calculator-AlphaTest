@@ -2282,6 +2282,7 @@ function processCSV(text) {
                 if(key === 'Geneseed') importAppState.modifiers.gene = val;
                 if(key === 'Armoury') importAppState.modifiers.arm = val;
                 if(key === 'Waves') importAppState.modifiers.waves = val;
+                if(key === 'Objective') importAppState.modifiers.obj = val;
                 if(key === 'Tasks') importAppState.modifiers.tasks = val; // NEW
             }
         }
@@ -2372,6 +2373,10 @@ function renderImportUI() {
     document.getElementById('import-mod-arm').textContent = mod.arm;
     document.getElementById('import-mod-obj').textContent = mod.obj;
     document.getElementById('import-mod-waves').textContent = mod.waves;
+
+    if(document.getElementById('import-mod-tasks')) {
+        document.getElementById('import-mod-tasks').textContent = mod.tasks || '-';
+    }
     
     buildImportTable('matrix-table', MATRIX_KEYS);
     buildImportTable('stats-table', ADD_STATS_KEYS);
